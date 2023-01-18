@@ -1,4 +1,4 @@
-FROM amd64/php:7.1-cli
+FROM php:7.1-cli
 
 ENV WORDPRESS_CLI_VERSION 1.4.1
 

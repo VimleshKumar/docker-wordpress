@@ -5,9 +5,9 @@
 pipeline {
     agent any
     environment {
-        REPO = 'fjudith/wordpress'
+        REPO = 'vimlesh/wordpress'
         PRIVATE_REPO = "${PRIVATE_REGISTRY}/${REPO}"
-        DOCKER_PRIVATE = credentials('docker-private-registry')
+        // DOCKER_PRIVATE = credentials('docker-private-registry')
     }
     stages {
         stage ('Checkout') {
@@ -79,7 +79,7 @@ pipeline {
                         // Create Network
                         sh "docker network create wordpress-micro-${BUILD_NUMBER}"
                         // Start database
-                        sh "docker run -d --name 'mariadb-${BUILD_NUMBER}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BUILD_NUMBER} amd64/mariadb:10.0"
+                        sh "docker run -d --name 'mariadb-${BUILD_NUMBER}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BUILD_NUMBER} mariadb:latest"
                         sleep 15
                         // Start Memcached
                         sh "docker run -d --name 'memcached-${BUILD_NUMBER}' --network wordpress-micro-${BUILD_NUMBER} memcached"

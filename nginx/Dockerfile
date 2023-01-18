@@ -1,6 +1,6 @@
 FROM nginx:stable
 
-LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>"
+LABEL maintainer="Vimlesh Kumar <vimlesh1gmail.com>"
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
     openssl \

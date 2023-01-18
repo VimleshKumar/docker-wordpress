@@ -1,6 +1,6 @@
 FROM wordpress:5.1.1-php7.1-fpm
 
-LABEL maintainer='Florian JUDITH <florian.judith.b@gmail.com>'
+LABEL maintainer="Vimlesh Kumar <vimlesh1gmail.com>"
 
 RUN apt-get update
 RUN apt-get install --no-install-recommends -y tidy csstidy nano netcat 
