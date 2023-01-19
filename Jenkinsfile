@@ -87,10 +87,10 @@ pipeline {
                         sh "docker run -d --name 'fpm-${BUILD_NUMBER}' --link mariadb-${BUILD_NUMBER}:mariadb --link memcached-${BUILD_NUMBER}:memcached --network wordpress-micro-${BUILD_NUMBER} -v wordpress-micro-data:/var/www/html ${REPO}:${COMMIT}-fpm"
                         sh "docker run -d --name 'nginx-${BUILD_NUMBER}' --link fpm-${BUILD_NUMBER}:wordpress --link memcached-${BUILD_NUMBER}:memcached --network wordpress-micro-${BUILD_NUMBER} -v wordpress-micro-data:/var/www/html ${REPO}:${COMMIT}-nginx"
                         // Get container IDs
-                        script {
-                            DOCKER_FPM   = sh(script: "docker ps -qa -f ancestor=${REPO}:${COMMIT}-fpm", returnStdout: true).trim()
-                            DOCKER_NGINX = sh(script: "docker ps -qa -f ancestor=${REPO}:${COMMIT}-nginx", returnStdout: true).trim()
-                        }
+                        // script {
+                        //     DOCKER_FPM   = sh(script: "docker ps -qa -f ancestor=${REPO}:${COMMIT}-fpm", returnStdout: true).trim()
+                        //     DOCKER_NGINX = sh(script: "docker ps -qa -f ancestor=${REPO}:${COMMIT}-nginx", returnStdout: true).trim()
+                        // }
                     }
                 }
             }
