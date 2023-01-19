@@ -116,12 +116,12 @@ pipeline {
                             sleep 10
                             sh "docker network rm wordpress-micro-${BUILD_NUMBER}"
                         }
-                        success {
+                        // success {
                             // sh "docker login -u ${DOCKER_PRIVATE_USR} -p ${DOCKER_PRIVATE_PSW} ${PRIVATE_REGISTRY}"
                             // sh "docker push ${PRIVATE_REPO}:${FPM}"
                             // sh "docker push ${PRIVATE_REPO}:${NGINX}"
                             // sh "docker push ${PRIVATE_REPO}:${CLI}"
-                        }
+                        // }
                     }
                 }
             }
