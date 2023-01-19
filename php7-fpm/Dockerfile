@@ -30,7 +30,7 @@ RUN { \
 
 # Install needed php extensions: memcache
 #
-RUN apt-get install --no-install-recommends -y unzip libssl-dev libpcre3 libpcre3-dev && \
+RUN apt-get install --no-install-recommends -y zlib1g-dev unzip libssl-dev libpcre3 libpcre3-dev && \
     cd /usr/src/php/ext/ && \
     curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7.zip && \
     unzip php7.zip && \
@@ -54,18 +54,18 @@ RUN docker-php-ext-install memcache
 RUN docker-php-ext-install zip
 
 # lumen packages
-RUN apt-get install openldap-back-mdb
-RUN apt-get install --update --virtual .build-deps autoconf g++ make zlib-dev curl-dev libidn2-dev libevent-dev icu-dev libidn-dev openldap libxml2-dev
+# RUN apt-get install openldap-back-mdb
+# RUN apt-get install --update --virtual .build-deps autoconf g++ make zlib-dev curl-dev libidn2-dev libevent-dev icu-dev libidn-dev openldap libxml2-dev
 
 
 # Install needed php extensions: ldap
 #
-RUN apt-get install --no-cache ldb-dev
-RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
-    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so
-RUN apt-get install libldap2-dev -y && \
-    docker-php-ext-configure ldap && \
-    docker-php-ext-install ldap
+# RUN apt-get install --no-cache ldb-dev
+# RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
+#     && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so
+# RUN apt-get install libldap2-dev -y && \
+#     docker-php-ext-configure ldap && \
+#     docker-php-ext-install ldap
 
 # Install needed wordpress extensions: WP-FFPC
 #
