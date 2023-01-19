@@ -4,11 +4,9 @@ pipeline {
         REPO = 'vimlesh/wordpress'
     }
     stages {
-        stage ('Checkout') {
+        stage ("Checkout: ${BRANCH_NAME}") {
             steps {
                 script {
-                    COMMIT = "${GIT_COMMIT.substring(0,8)}"
-
                     if ("${BRANCH_NAME}" == "master"){
                         TAG   = "latest"
                         NGINX = "nginx"
@@ -25,7 +23,7 @@ pipeline {
                 sh 'printenv'
             }
         }
-        stage ('Docker build Micro-Service') {
+        stage ('Build: Docker Micro-Service') {
             parallel {
                 stage ('Wodpress Nginx'){
                     agent { label 'docker'}
@@ -47,31 +45,29 @@ pipeline {
                 }
             }
         }
-        stages ('Deploy'){
-            stage ('Stop and clean Micro-Services'){
-                echo 'Remove micro-services stack'
-                sh "docker rm -fv nginx-${BRANCH_NAME}"
-                sh "docker rm -fv fpm-${BRANCH_NAME}"
-                sh "docker rm -fv memcached-${BRANCH_NAME}"
-                sh "docker rm -fv mariadb-${BRANCH_NAME}"
-                sleep 10
-                sh "docker network rm wordpress-micro-${BRANCH_NAME}"
-            }
-            stage ('Start Micro-Services'){
-                agent { label 'docker'}
-                
-                steps {
-                    // Create Network
-                    sh "docker network create wordpress-micro-${BRANCH_NAME}"
-                    // Start database
-                    sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
-                    sleep 15
-                    // Start Memcached
-                    sh "docker run -d --name 'memcached-${BRANCH_NAME}' --network wordpress-micro-${BRANCH_NAME} memcached"
-                    // Start application micro-services
-                    sh "docker run -d --name 'fpm-${BRANCH_NAME}' --link mariadb-${BRANCH_NAME}:mariadb --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-fpm"
-                    sh "docker run -d --name 'nginx-${BRANCH_NAME}' --link fpm-${BRANCH_NAME}:wordpress --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-nginx"
-                }
+        stage ('Deploy: Stop and clean Micro-Services'){
+            echo 'Remove micro-services stack'
+            sh "docker rm -fv nginx-${BRANCH_NAME}"
+            sh "docker rm -fv fpm-${BRANCH_NAME}"
+            sh "docker rm -fv memcached-${BRANCH_NAME}"
+            sh "docker rm -fv mariadb-${BRANCH_NAME}"
+            sleep 10
+            sh "docker network rm wordpress-micro-${BRANCH_NAME}"
+        }
+        stage ('Deploy: Start Micro-Services'){
+            agent { label 'docker'}
+            
+            steps {
+                // Create Network
+                sh "docker network create wordpress-micro-${BRANCH_NAME}"
+                // Start database
+                sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
+                sleep 15
+                // Start Memcached
+                sh "docker run -d --name 'memcached-${BRANCH_NAME}' --network wordpress-micro-${BRANCH_NAME} memcached"
+                // Start application micro-services
+                sh "docker run -d --name 'fpm-${BRANCH_NAME}' --link mariadb-${BRANCH_NAME}:mariadb --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-fpm"
+                sh "docker run -d --name 'nginx-${BRANCH_NAME}' --link fpm-${BRANCH_NAME}:wordpress --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-nginx"
             }
         }
         stage ('Test'){
@@ -96,7 +92,7 @@ pipeline {
         success {
             echo 'Only run if the current Pipeline has a "success" status, typically denoted in the web UI with a blue or green indication.'
         }
-        failures{
+        failure{
             echo 'Only run if the current Pipeline has a "failure" status, typically denoted in the web UI with a red indication.'
             echo 'Remove micro-services stack on failure'
             sh "docker rm -fv nginx-${BRANCH_NAME}"
