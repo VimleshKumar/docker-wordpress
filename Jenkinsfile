@@ -35,7 +35,7 @@ pipeline {
                 stage ('Wordpress PHP-FPM') {
                     agent { label 'docker'}
                     steps {
-                        sh "docker build -f php7-fpm/Dockerfile -t ${REPO}:${TAG}-fpm php7-fpm/"
+                        sh "docker build -f php8-fpm/Dockerfile -t ${REPO}:${TAG}-fpm php8-fpm/"
                     }
                 }
                 stage ('Wordpress CLI') {
