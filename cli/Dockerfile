@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -yqq \
         sudo \
         less \
-        mysql-client \
+        default-mysql-client \
         libjpeg-dev \
         libpng-dev 
 
