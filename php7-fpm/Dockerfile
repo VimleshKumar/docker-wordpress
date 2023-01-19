@@ -1,4 +1,4 @@
-FROM wordpress:5.1.1-php7.1-fpm
+FROM wordpress:6.1.0-php8.1-fpm
 
 LABEL maintainer="Vimlesh Kumar <vimlesh1gmail.com>"
 
