@@ -4,8 +4,9 @@ pipeline {
         REPO = 'vimlesh/wordpress'
     }
     stages {
-        stage ("Checkout: ${BRANCH_NAME}") {
+        stage ('Checkout: ${BRANCH_NAME}') {
             steps {
+                echo "Checkout: ${BRANCH_NAME}: ${GIT_COMMIT}"
                 script {
                     if ("${BRANCH_NAME}" == "master"){
                         TAG   = "latest"
