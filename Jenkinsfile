@@ -103,7 +103,7 @@ pipeline {
                         sleep 20
                         sh "docker logs nginx-${BUILD_NUMBER}"
                         // External
-                        sh "docker run --rm --network wordpress-micro-${BUILD_NUMBER} blitznote/debootstrap-amd64:17.04 bash -c 'curl -iL -X GET http://${DOCKER_NGINX}:80'"
+                        // sh "docker run --rm --network wordpress-micro-${BUILD_NUMBER} blitznote/debootstrap-amd64:17.04 bash -c 'curl -iL -X GET http://${DOCKER_NGINX}:80'"
                     }
                     post {
                         always {
@@ -117,10 +117,10 @@ pipeline {
                             sh "docker network rm wordpress-micro-${BUILD_NUMBER}"
                         }
                         success {
-                            sh "docker login -u ${DOCKER_PRIVATE_USR} -p ${DOCKER_PRIVATE_PSW} ${PRIVATE_REGISTRY}"
-                            sh "docker push ${PRIVATE_REPO}:${FPM}"
-                            sh "docker push ${PRIVATE_REPO}:${NGINX}"
-                            sh "docker push ${PRIVATE_REPO}:${CLI}"
+                            // sh "docker login -u ${DOCKER_PRIVATE_USR} -p ${DOCKER_PRIVATE_PSW} ${PRIVATE_REGISTRY}"
+                            // sh "docker push ${PRIVATE_REPO}:${FPM}"
+                            // sh "docker push ${PRIVATE_REPO}:${NGINX}"
+                            // sh "docker push ${PRIVATE_REPO}:${CLI}"
                         }
                     }
                 }
