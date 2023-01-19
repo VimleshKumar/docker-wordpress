@@ -4,7 +4,7 @@ pipeline {
         REPO = 'vimlesh/wordpress'
     }
     stages {
-        stage ('Checkout: ${BRANCH_NAME}') {
+        stage ('Checkout') {
             steps {
                 echo "Checkout: ${BRANCH_NAME}: ${GIT_COMMIT}"
                 script {
@@ -55,14 +55,14 @@ pipeline {
                 sh "docker rm -fv memcached-${BRANCH_NAME}"
                 sh "docker rm -fv mariadb-${BRANCH_NAME}"
                 sleep 10
-                sh "docker network rm wordpress-micro-${BRANCH_NAME}"
+                sh "docker network prune -f --filter \"label=wordpress-micro-${BRANCH_NAME}\""
             }
         }
         stage ('Deploy: Start Micro-Services'){
             agent { label 'docker'}
             steps {
                 // Create Network
-                sh "docker network create wordpress-micro-${BRANCH_NAME}"
+                sh "docker network create wordpress-micro-${BRANCH_NAME} --label=wordpress-micro-${BRANCH_NAME}"
                 // Start database
                 sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
                 sleep 15
@@ -103,7 +103,7 @@ pipeline {
             sh "docker rm -fv memcached-${BRANCH_NAME}"
             sh "docker rm -fv mariadb-${BRANCH_NAME}"
             sleep 10
-            sh "docker network rm wordpress-micro-${BRANCH_NAME}"
+            sh "docker network prune -f --filter \"label=wordpress-micro-${BRANCH_NAME}\""
         }
         unstable {
             echo 'Only run if the current Pipeline has an "unstable" status, usually caused by test failures, code violations, etc. Typically denoted in the web UI with a yellow indication.'
