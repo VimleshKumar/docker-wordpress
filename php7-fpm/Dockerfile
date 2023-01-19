@@ -56,6 +56,9 @@ RUN docker-php-ext-install zip
 
 # Install needed php extensions: ldap
 #
+RUN apt-get install --no-cache ldb-dev
+RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
+    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so
 RUN apt-get install libldap2-dev -y && \
     docker-php-ext-configure ldap && \
     docker-php-ext-install ldap
