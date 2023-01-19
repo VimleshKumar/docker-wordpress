@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        stage ('Deploy'){
+        stages ('Deploy'){
             stage ('Stop and clean Micro-Services'){
                 echo 'Remove micro-services stack'
                 sh "docker rm -fv nginx-${BRANCH_NAME}"
