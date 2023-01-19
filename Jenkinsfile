@@ -46,17 +46,19 @@ pipeline {
             }
         }
         stage ('Deploy: Stop and clean Micro-Services'){
-            echo 'Remove micro-services stack'
-            sh "docker rm -fv nginx-${BRANCH_NAME}"
-            sh "docker rm -fv fpm-${BRANCH_NAME}"
-            sh "docker rm -fv memcached-${BRANCH_NAME}"
-            sh "docker rm -fv mariadb-${BRANCH_NAME}"
-            sleep 10
-            sh "docker network rm wordpress-micro-${BRANCH_NAME}"
+            agent { label 'docker'}
+            steps {
+                echo 'Remove micro-services stack'
+                sh "docker rm -fv nginx-${BRANCH_NAME}"
+                sh "docker rm -fv fpm-${BRANCH_NAME}"
+                sh "docker rm -fv memcached-${BRANCH_NAME}"
+                sh "docker rm -fv mariadb-${BRANCH_NAME}"
+                sleep 10
+                sh "docker network rm wordpress-micro-${BRANCH_NAME}"
+            }
         }
         stage ('Deploy: Start Micro-Services'){
             agent { label 'docker'}
-            
             steps {
                 // Create Network
                 sh "docker network create wordpress-micro-${BRANCH_NAME}"
