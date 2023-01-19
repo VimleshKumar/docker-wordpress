@@ -53,6 +53,10 @@ RUN docker-php-ext-install memcached
 RUN docker-php-ext-install memcache
 RUN docker-php-ext-install zip
 
+# lumen packages
+RUN apt-get install openldap-back-mdb
+RUN apt-get install --update --virtual .build-deps autoconf g++ make zlib-dev curl-dev libidn2-dev libevent-dev icu-dev libidn-dev openldap libxml2-dev
+
 
 # Install needed php extensions: ldap
 #
