@@ -69,7 +69,7 @@ pipeline {
                 sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=${WP_MYSQL_USER} -e MYSQL_PASSWORD=${WP_MYSQL_PASSWORD} -e MYSQL_DATABASE=${WP_MYSQL_DB} -v wordpress-db:/var/lib/mysql --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
                 sleep 15
                 // Start Memcached
-                sh "docker run -d --name 'memcached-${BRANCH_NAME}' --network wordpress-micro-${BRANCH_NAME} memcached"
+                sh "docker run -d --name 'memcached-${BRANCH_NAME}' --network wordpress-micro-${BRANCH_NAME} wp-memcached"
                 // Start application micro-services
                 sh "docker run -d --name 'fpm-${BRANCH_NAME}' --link mariadb-${BRANCH_NAME}:mariadb --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-fpm"
                 sh "docker run -d --name 'nginx-${BRANCH_NAME}' --link fpm-${BRANCH_NAME}:wordpress --link memcached-${BRANCH_NAME}:memcached --network wordpress-micro-${BRANCH_NAME} -p 80:80 -p 443:443 -v wordpress-micro-data:/var/www/html ${REPO}:${TAG}-nginx"
