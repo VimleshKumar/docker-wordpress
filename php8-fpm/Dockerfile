@@ -32,13 +32,13 @@ RUN { \
 #
 RUN apt-get install --no-install-recommends -y zlib1g-dev unzip libssl-dev libpcre3 libpcre3-dev && \
     cd /usr/src/php/ext/ && \
-    curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7.zip && \
-    unzip php7.zip && \
-    mv pecl-memcache-NON_BLOCKING_IO_php7 memcache && \
+    curl -sSL -o php8.zip https://github.com/websupport-sk/pecl-memcache/archive/refs/tags/8.0.1.zip && \
+    unzip php8.zip && \
+    mv pecl-memcache-8.0.1 memcache && \
     docker-php-ext-configure memcache --with-php-config=/usr/local/bin/php-config && \
     docker-php-ext-install memcache && \
     echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini && \
-    rm -rf /tmp/pecl-memcache-php7 php7.zip
+    rm -rf /tmp/pecl-memcache-8.0.1 php8.zip
 
 
 # Install needed php extensions: zip
