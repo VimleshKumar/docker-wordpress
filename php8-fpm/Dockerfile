@@ -81,11 +81,11 @@ RUN cd /usr/src/wordpress && ls -l && \
 
 # Install needed wordpress extensions: Simple-Ldap-Login
 #
-RUN cd /usr/src/wordpress/wp-content/plugins && \
-    curl -o simple-ldap-login.zip -L https://downloads.wordpress.org/plugin/simple-ldap-login.1.6.0.zip && \
-    unzip -o simple-ldap-login.zip && \
-    chown -R www-data:www-data simple-ldap-login && \
-    rm -f simple-ldap-login.zip
+# RUN cd /usr/src/wordpress/wp-content/plugins && \
+#     curl -o simple-ldap-login.zip -L https://downloads.wordpress.org/plugin/simple-ldap-login.1.6.0.zip && \
+#     unzip -o simple-ldap-login.zip && \
+#     chown -R www-data:www-data simple-ldap-login && \
+#     rm -f simple-ldap-login.zip
 
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/*

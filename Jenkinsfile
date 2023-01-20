@@ -2,6 +2,9 @@ pipeline {
     agent any
     environment {
         REPO = 'vimlesh/wordpress'
+        WP_MYSQL_PASSWORD = ${WP_MYSQL_PASSWORD ?: "wordpress"}
+        WP_MYSQL_USER = ${WP_MYSQL_USER ?: "wordpress"}
+        WP_MYSQL_DB = ${WWP_MYSQL_DB ?: "wordpress"}
     }
     options { buildDiscarder(logRotator(numToKeepStr: '5')) }
     stages {
@@ -23,6 +26,7 @@ pipeline {
                     }
                 }
                 sh 'printenv'
+                echo "${WP_MYSQL_USER}"
             }
         }
         stage ('Build: Docker Micro-Service') {
@@ -65,7 +69,7 @@ pipeline {
                 // Create Network
                 sh "docker network create wordpress-micro-${BRANCH_NAME} --label=wordpress-micro-${BRANCH_NAME}"
                 // Start database
-                sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
+                sh "docker run -d --name 'mariadb-${BRANCH_NAME}' -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_USER=${WP_MYSQL_USER} -e MYSQL_PASSWORD=${WP_MYSQL_PASSWORD} -e MYSQL_DATABASE=${WP_MYSQL_DB} -v wordpress-db:/var/lib/mysql --network wordpress-micro-${BRANCH_NAME} mariadb:latest"
                 sleep 15
                 // Start Memcached
                 sh "docker run -d --name 'memcached-${BRANCH_NAME}' --network wordpress-micro-${BRANCH_NAME} memcached"
