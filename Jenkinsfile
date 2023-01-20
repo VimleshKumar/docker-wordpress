@@ -3,6 +3,7 @@ pipeline {
     environment {
         REPO = 'vimlesh/wordpress'
     }
+    options { buildDiscarder(logRotator(numToKeepStr: '5')) }
     stages {
         stage ('Checkout') {
             steps {
