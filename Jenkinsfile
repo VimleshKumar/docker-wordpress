@@ -2,9 +2,9 @@ pipeline {
     agent any
     environment {
         REPO = 'vimlesh/wordpress'
-        WP_MYSQL_PASSWORD = ${WP_MYSQL_PASSWORD ?: "wordpress"}
-        WP_MYSQL_USER = ${WP_MYSQL_USER ?: "wordpress"}
-        WP_MYSQL_DB = ${WWP_MYSQL_DB ?: "wordpress"}
+        // WP_MYSQL_PASSWORD = ${WP_MYSQL_PASSWORD}
+        // WP_MYSQL_USER = ${WP_MYSQL_USER}
+        // WP_MYSQL_DB = ${WWP_MYSQL_DB}
     }
     options { buildDiscarder(logRotator(numToKeepStr: '5')) }
     stages {
