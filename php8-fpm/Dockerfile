@@ -14,7 +14,7 @@ RUN apt-get install -y libpq-dev libmemcached-dev && \
         tar -xf memcached.tgz -C /usr/src/php/ext/ && \
         echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini && \
         rm memcached.tgz && \
-        mv /usr/src/php/ext/memcached-3.0.3 /usr/src/php/ext/memcached
+        mv /usr/src/php/ext/memcached-3.2.0 /usr/src/php/ext/memcached
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
