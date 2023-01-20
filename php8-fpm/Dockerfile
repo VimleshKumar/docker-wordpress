@@ -10,7 +10,7 @@ RUN mkdir -p /usr/src/php/ext
 # Install needed php extensions: memcached
 #
 RUN apt-get install -y libpq-dev libmemcached-dev && \
-    curl -o memcached.tgz -SL http://pecl.php.net/get/memcached-3.0.3.tgz && \
+    curl -o memcached.tgz -SL https://pecl.php.net/get/memcached-3.2.0.tgz && \
         tar -xf memcached.tgz -C /usr/src/php/ext/ && \
         echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini && \
         rm memcached.tgz && \
@@ -32,13 +32,13 @@ RUN { \
 #
 RUN apt-get install --no-install-recommends -y zlib1g-dev unzip libssl-dev libpcre3 libpcre3-dev && \
     cd /usr/src/php/ext/ && \
-    curl -sSL -o php8.zip https://github.com/websupport-sk/pecl-memcache/archive/refs/tags/8.0.1.zip && \
-    unzip php8.zip && \
-    mv pecl-memcache-8.0.1 memcache && \
+    curl -sSL -o memcache-8.tgz https://pecl.php.net/get/memcache-8.0.tgz && \
+    tar -xf memcache-8.tgz && \
+    mv memcache-8.0 memcache && \
     docker-php-ext-configure memcache --with-php-config=/usr/local/bin/php-config && \
     docker-php-ext-install memcache && \
     echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini && \
-    rm -rf /tmp/pecl-memcache-8.0.1 php8.zip
+    rm -rf /tmp/memcache-8.0 memcache-8.tgz
 
 
 # Install needed php extensions: zip
