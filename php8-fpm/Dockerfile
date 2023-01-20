@@ -43,11 +43,11 @@ RUN apt-get install --no-install-recommends -y zlib1g-dev unzip libssl-dev libpc
 
 # Install needed php extensions: zip
 #
-RUN apt-get install -y libz-dev && \
-    curl -o zip.tgz -SL http://pecl.php.net/get/zip-1.15.1.tgz && \
+RUN apt-get install -y libz-dev libzip && \
+    curl -o zip.tgz -SL https://pecl.php.net/get/zip-1.21.1.tgz && \
         tar -xf zip.tgz -C /usr/src/php/ext/ && \
         rm zip.tgz && \
-        mv /usr/src/php/ext/zip-1.15.1 /usr/src/php/ext/zip
+        mv /usr/src/php/ext/zip-1.21.1 /usr/src/php/ext/zip
 
 RUN docker-php-ext-install memcached
 RUN docker-php-ext-install memcache
